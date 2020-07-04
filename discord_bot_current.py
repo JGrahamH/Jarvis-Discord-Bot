@@ -252,8 +252,7 @@ async def play(ctx, url):
         print(f'Bot has joined - {channel}')
     else:
         voice = await channel.connect()
-
-    await ctx.send(f'Bot has joined - {channel}')
+        await ctx.send(content=f"```Bot has joined - {channel}```")
 
     searchURL = str(url)
     print(searchURL)
@@ -267,7 +266,7 @@ async def play(ctx, url):
         await ctx.send("ERROR: Music playing")
         return
 
-    await ctx.send("Getting everything ready now")
+    await ctx.send(content="```Getting everything ready now```")
 
     voice = get(client.voice_clients, guild=ctx.guild)
 
@@ -296,8 +295,17 @@ async def play(ctx, url):
     voice.source.volume = 0.1
 
     nname = name.rsplit("-", 2)
-    await ctx.send(f"Playing: {nname[0]}")
     print("Playing")
+
+    embed = discord.Embed(title=f"Playing: {nname[0]}",
+                          colour=discord.Colour(0x3ec490),
+                          url='',
+                          description=(searchURL))
+
+    embed.set_author(name="Jarvis", url="",
+                     icon_url="https://cdn.discordapp.com/attachments/727523746059124759/728043489824211034/FH5pIK55ki.png")  # noqa
+
+    await ctx.channel.send(embed=embed)
 
 # pauses youtube video
 @client.command(aliases=['ps'])
