@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
+from dotenv import load_dotenv
 import random
 import aiohttp
 import json
@@ -10,7 +11,9 @@ import kadal
 from kadal import MediaNotFound
 
 client = commands.Bot(command_prefix='!')
-TOKEN = 'YOUR TOKEN'
+
+load_dotenv()
+TOKEN = os.getenv('TOKEN')
 
 AL_ICON = 'https://avatars2.githubusercontent.com/u/18018524?s=280&v=4'
 
