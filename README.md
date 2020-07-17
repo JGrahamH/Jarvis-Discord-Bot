@@ -1,6 +1,22 @@
 # Jarvis-Discord-Bot
 A discord bot created in python using discord.py. A list of commands provide features such as Youtube, images, and responses.
 
+##Requirements
+- discord.py
+- dotenv
+- random
+- aiohttp
+- youtube_dl
+- kadal
+
+##Getting Started
+1. Clone this repo.
+2. Create a copy of `.env.example` named .env
+3. Got to the Discord Developer Portal and create an application.
+4. Go to "Bot" tab and click "Add a bot".
+5. Copy the token for the bot and paste in `.env` file.
+6. Run `jarvis_bot.py`
+
 Prefix "!" is required before command.
 
 | Command | Description |
