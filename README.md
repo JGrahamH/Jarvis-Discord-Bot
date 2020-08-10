@@ -3,7 +3,7 @@ A discord bot created in python using discord.py. A list of commands provide fea
 
 ## Requirements
 - discord.py
-- dotenv
+- python-dotenv
 - random
 - aiohttp
 - youtube_dl
