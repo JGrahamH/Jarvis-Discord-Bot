@@ -9,6 +9,12 @@ import youtube_dl
 import os
 import kadal
 from kadal import MediaNotFound
+import pandas as pd
+import matplotlib.pyplot as plt
+import datetime as dt
+
+
+today = dt.datetime.now().date()
 
 client = commands.Bot(command_prefix='!')
 
@@ -114,7 +120,7 @@ async def ltc(ctx):
         response = json.loads(response)
         responseStr = str(response)
         await session.close()
-        await ctx.channel.send("Litecoin price is: $" + responseStr[19:25])
+        await ctx.channel.send("Litecoin price is: $" + responseStr[20:25])
 
 # ethereum
 @client.command()
@@ -129,7 +135,117 @@ async def eth(ctx):
         await session.close()
         await ctx.channel.send("Ethereum price is: $" + responseStr[20:26])
 
-# sudoku/ seppuku
+
+# ethereum graph
+@client.command()
+async def ethchart(ctx):
+    """Fetches ETH price from Coingecko showing - Open, Close, Low, High"""
+
+    url = 'https://api.coingecko.com/api/v3/coins/ethereum/ohlc?vs_currency=usd&days=1'  # noqa
+    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        df = pd.read_json(response, orient='columns')
+
+        mapping = {df.columns[0]: 'Timestamp',
+                   df.columns[1]: 'Open',
+                   df.columns[2]: 'High',
+                   df.columns[3]: 'Low',
+                   df.columns[4]: 'Close'}
+        df = df.rename(columns=mapping)
+        df = df.drop('Timestamp', 1)
+        df['Open'].plot()
+        df['High'].plot()
+        df['Low'].plot()
+        df['Close'].plot()
+        plt.legend()
+        ax = df.plot(lw=2, colormap='jet',
+                     marker='.',
+                     markersize=10,
+                     title='Ethereum - ETH')
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Price - $USD")
+        plt.savefig("./image/ethGraph.png")
+
+        file = discord.File("image/ethGraph.png",
+                            filename="ethGraph.png")
+    await ctx.channel.send("```Ethereum 3-Day Chart (USD)```")
+    await ctx.channel.send(file=file)
+
+# bitcoin graph
+@client.command()
+async def btcchart(ctx):
+    """Fetches BTC price from Coingecko showing - Open, Close, Low, High"""
+
+    url = 'https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=usd&days=1'  # noqa
+    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        df = pd.read_json(response, orient='columns')
+
+        mapping = {df.columns[0]: 'Timestamp',
+                   df.columns[1]: 'Open',
+                   df.columns[2]: 'High',
+                   df.columns[3]: 'Low',
+                   df.columns[4]: 'Close'}
+        df = df.rename(columns=mapping)
+        df = df.drop('Timestamp', 1)
+        df['Open'].plot()
+        df['High'].plot()
+        df['Low'].plot()
+        df['Close'].plot()
+        plt.legend()
+        ax = df.plot(lw=2, colormap='jet',
+                     marker='.',
+                     markersize=10,
+                     title='Bitcoin - BTC')
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Price - $USD")
+        plt.savefig("./image/btcGraph.png")
+
+        file = discord.File("image/btcGraph.png",
+                            filename="btcGraph.png")
+    await ctx.channel.send("```Bitcoin 3-Day Chart (USD)```")
+    await ctx.channel.send(file=file)
+
+# litecoin graph
+@client.command()
+async def ltcchart(ctx):
+    """Fetches BTC price from Coingecko showing - Open, Close, Low, High"""
+
+    url = 'https://api.coingecko.com/api/v3/coins/litecoin/ohlc?vs_currency=usd&days=1'  # noqa
+    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        df = pd.read_json(response, orient='columns')
+
+        mapping = {df.columns[0]: 'Timestamp',
+                   df.columns[1]: 'Open',
+                   df.columns[2]: 'High',
+                   df.columns[3]: 'Low',
+                   df.columns[4]: 'Close'}
+        df = df.rename(columns=mapping)
+        df = df.drop('Timestamp', 1)
+        df['Open'].plot()
+        df['High'].plot()
+        df['Low'].plot()
+        df['Close'].plot()
+        plt.legend()
+        ax = df.plot(lw=2, colormap='jet',
+                     marker='.',
+                     markersize=10,
+                     title='Litecoin - LTC')
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Price - $USD")
+        plt.savefig("./image/ltcGraph.png")
+
+        file = discord.File("image/ltcGraph.png",
+                            filename="ltcGraph.png")
+    await ctx.channel.send("```Litecoin 3-Day Chart (USD)```")
+    await ctx.channel.send(file=file)
+
+
+# sudoku - seppuku
 @client.command()
 async def sudoku(ctx):
     """Seppuku"""
@@ -141,7 +257,7 @@ async def sudoku(ctx):
 @client.command()
 async def imglist(ctx):
     """List of image search terms."""
-    terms = "```neko``````kitsune``````hug``````pat``````waifu``````cry``````kiss``````slap``````smug``````punch```"  # noqa
+    terms = "```neko``````kitsune``````hug``````pat``````waifu``````cry``````kiss``````slap``````smug``````punch``````NSFW - nekolewd```"  # noqa
     await ctx.send(terms)
 
 # Embed - gets random cat girl image from neko love
@@ -167,7 +283,7 @@ async def neko(ctx):
 
 # Embed - gets random NSFW image from neko love
 @client.command()
-async def hentai(ctx):
+async def lewd(ctx):
     """Fetches NSFW image."""
     endpoint = 'nekolewd'
     url = ('https://neko-love.xyz/api/v1/' + endpoint)
@@ -210,7 +326,7 @@ async def kitsune(ctx):
 
 # Embed - gets random kitsune image from neko love
 @client.command()
-async def img(ctx, endpoint_val):
+async def img(ctx, *, endpoint_val):
     """Fetches image based on tag."""
     endpoint = endpoint_val
     url = ('https://neko-love.xyz/api/v1/' + endpoint)
@@ -354,7 +470,6 @@ async def resume(ctx):
         print('Music is not paused - Failed Pause')
         await ctx.sent('Music is not paused - Failed Pause')
 
-
 # resume youtube video
 @client.command(aliases=['st'])
 async def stop(ctx):
@@ -425,7 +540,6 @@ async def al_anime(ctx, query):
     em.set_thumbnail(url=result.cover_image)
     await ctx.send(embed=em)
 
-
 # searches for manga on anilist
 @client.command(name="manga")
 async def al_manga(ctx, query):
@@ -460,6 +574,5 @@ async def al_manga(ctx, query):
     em.set_author(name='Anilist', icon_url=AL_ICON)
     em.set_thumbnail(url=result.cover_image)
     await ctx.send(embed=em)
-
 
 client.run(TOKEN)
