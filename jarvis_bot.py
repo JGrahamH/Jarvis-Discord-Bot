@@ -111,59 +111,6 @@ async def coin(ctx, id):
         await ctx.channel.send("Price is: $ " + responseStr)
 
 
-# bitcoin
-@client.command()
-async def btc(ctx):
-    """Fetches BTC price from Coingecko."""
-    url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=USD'  # noqa
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseStr = str(response)
-        await session.close()
-        await ctx.channel.send("Bitcoin price is: $" + responseStr[19:27])
-
-# litecoin
-@client.command()
-async def ltc(ctx):
-    """Fetches LTC price from Coingecko."""
-    url = 'https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd'  # noqa
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseStr = str(response)
-        await session.close()
-        await ctx.channel.send("Litecoin price is: $" + responseStr[20:25])
-
-# ethereum
-@client.command()
-async def eth(ctx):
-    """Fetches ETH price from Coingecko."""
-    url = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd'  # noqa
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseStr = str(response)
-        await session.close()
-        await ctx.channel.send("Ethereum price is: $" + responseStr[20:26])
-
-# garlicoin
-@client.command()
-async def grlc(ctx):
-    """Fetches GRLC price from Coingecko."""
-    url = 'https://api.coingecko.com/api/v3/simple/price?ids=garlicoin&vs_currencies=usd'  # noqa
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseStr = str(response)
-        await session.close()
-        await ctx.channel.send("Garlicoin price is: $" + responseStr[20:30])
-
-
 # ethereum graph
 @client.command()
 async def ethchart(ctx):
