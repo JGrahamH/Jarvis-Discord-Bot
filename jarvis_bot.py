@@ -110,13 +110,12 @@ async def coin(ctx, id):
         responseStr = str(price)
         await ctx.channel.send("Price is: $ " + responseStr)
 
-
-# ethereum graph
+# coin graph
 @client.command()
-async def ethchart(ctx):
-    """Fetches ETH price from Coingecko showing - Open, Close, Low, High"""
-
-    url = 'https://api.coingecko.com/api/v3/coins/ethereum/ohlc?vs_currency=usd&days=1'  # noqa
+async def coinchart(ctx, id):
+    """Fetches Coin price from Coingecko showing - Open, Close, Low, High"""
+    id = id
+    url = "https://api.coingecko.com/api/v3/coins/" + id + "/ohlc?vs_currency=usd&days=1"  # noqa
     async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
         raw_response = await session.get(url)
         response = await raw_response.text()
@@ -137,124 +136,16 @@ async def ethchart(ctx):
         ax = df.plot(lw=2, colormap='jet',
                      marker='.',
                      markersize=10,
-                     title='Ethereum - ETH')
+                     title=id)
         ax.set_xlabel("Time")
         ax.set_ylabel("Price - $USD")
-        plt.savefig("./image/ethGraph.png")
+        plt.savefig("./image/coinGraph.png")
 
-        file = discord.File("image/ethGraph.png",
-                            filename="ethGraph.png")
-    await ctx.channel.send("```Ethereum 3-Day Chart (USD)```")
+        file = discord.File("image/coinGraph.png",
+                            filename="coinGraph.png")
+    await ctx.channel.send(f"{id} 3-Day Chart (USD)")
     await ctx.channel.send(file=file)
 
-# bitcoin graph
-@client.command()
-async def btcchart(ctx):
-    """Fetches BTC price from Coingecko showing - Open, Close, Low, High"""
-
-    url = 'https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=usd&days=1'  # noqa
-    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        df = pd.read_json(response, orient='columns')
-
-        mapping = {df.columns[0]: 'Timestamp',
-                   df.columns[1]: 'Open',
-                   df.columns[2]: 'High',
-                   df.columns[3]: 'Low',
-                   df.columns[4]: 'Close'}
-        df = df.rename(columns=mapping)
-        df = df.drop('Timestamp', 1)
-        df['Open'].plot()
-        df['High'].plot()
-        df['Low'].plot()
-        df['Close'].plot()
-        plt.legend()
-        ax = df.plot(lw=2, colormap='jet',
-                     marker='.',
-                     markersize=10,
-                     title='Bitcoin - BTC')
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Price - $USD")
-        plt.savefig("./image/btcGraph.png")
-
-        file = discord.File("image/btcGraph.png",
-                            filename="btcGraph.png")
-    await ctx.channel.send("```Bitcoin 3-Day Chart (USD)```")
-    await ctx.channel.send(file=file)
-
-# litecoin graph
-@client.command()
-async def ltcchart(ctx):
-    """Fetches LTC price from Coingecko showing - Open, Close, Low, High"""
-
-    url = 'https://api.coingecko.com/api/v3/coins/litecoin/ohlc?vs_currency=usd&days=1'  # noqa
-    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        df = pd.read_json(response, orient='columns')
-
-        mapping = {df.columns[0]: 'Timestamp',
-                   df.columns[1]: 'Open',
-                   df.columns[2]: 'High',
-                   df.columns[3]: 'Low',
-                   df.columns[4]: 'Close'}
-        df = df.rename(columns=mapping)
-        df = df.drop('Timestamp', 1)
-        df['Open'].plot()
-        df['High'].plot()
-        df['Low'].plot()
-        df['Close'].plot()
-        plt.legend()
-        ax = df.plot(lw=2, colormap='jet',
-                     marker='.',
-                     markersize=10,
-                     title='Litecoin - LTC')
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Price - $USD")
-        plt.savefig("./image/ltcGraph.png")
-
-        file = discord.File("image/ltcGraph.png",
-                            filename="ltcGraph.png")
-    await ctx.channel.send("```Litecoin 3-Day Chart (USD)```")
-    await ctx.channel.send(file=file)
-
-
-# garlicoin graph
-@client.command()
-async def grlcchart(ctx):
-    """Fetches GRLC price from Coingecko showing - Open, Close, Low, High"""
-
-    url = 'https://api.coingecko.com/api/v3/coins/garlicoin/ohlc?vs_currency=usd&days=1'  # noqa
-    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        df = pd.read_json(response, orient='columns')
-
-        mapping = {df.columns[0]: 'Timestamp',
-                   df.columns[1]: 'Open',
-                   df.columns[2]: 'High',
-                   df.columns[3]: 'Low',
-                   df.columns[4]: 'Close'}
-        df = df.rename(columns=mapping)
-        df = df.drop('Timestamp', 1)
-        df['Open'].plot()
-        df['High'].plot()
-        df['Low'].plot()
-        df['Close'].plot()
-        plt.legend()
-        ax = df.plot(lw=2, colormap='jet',
-                     marker='.',
-                     markersize=10,
-                     title='Garlicoin - GRLC')
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Price - $USD")
-        plt.savefig("./image/grlcGraph.png")
-
-        file = discord.File("image/grlcGraph.png",
-                            filename="grlcGraph.png")
-    await ctx.channel.send("```Garlicoin 3-Day Chart (USD)```")
-    await ctx.channel.send(file=file)
 
 # sudoku - seppuku
 @client.command()
