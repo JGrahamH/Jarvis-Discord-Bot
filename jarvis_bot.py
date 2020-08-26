@@ -113,7 +113,7 @@ async def coin(ctx, id):
 # coin graph
 @client.command()
 async def coinchart(ctx, id):
-    """Fetches Coin price from Coingecko showing - Open, Close, Low, High"""
+    """Fetches Coin price from Coingecko showing - Open, Close, Low, High."""
     id = id
     url = "https://api.coingecko.com/api/v3/coins/" + id + "/ohlc?vs_currency=usd&days=1"  # noqa
     async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
