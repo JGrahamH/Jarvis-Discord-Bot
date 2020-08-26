@@ -96,6 +96,21 @@ async def bot(ctx):
 
 # cypto commands
 
+# coin
+@client.command()
+async def coin(ctx, id):
+    """Fetches Coin price from Coingecko."""
+    id = id
+    url = "https://api.coingecko.com/api/v3/simple/price?ids=" + id + "&vs_currencies=USD"  # noqa
+    async with aiohttp.ClientSession() as session:  # Async HTTP request
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        df = pd.read_json(response, orient='columns')
+        price = (df.iat[0, 0])
+        responseStr = str(price)
+        await ctx.channel.send("Price is: $ " + responseStr)
+
+
 # bitcoin
 @client.command()
 async def btc(ctx):
@@ -107,7 +122,7 @@ async def btc(ctx):
         response = json.loads(response)
         responseStr = str(response)
         await session.close()
-        await ctx   .channel.send("Bitcoin price is: $" + responseStr[19:27])
+        await ctx.channel.send("Bitcoin price is: $" + responseStr[19:27])
 
 # litecoin
 @client.command()
@@ -134,6 +149,19 @@ async def eth(ctx):
         responseStr = str(response)
         await session.close()
         await ctx.channel.send("Ethereum price is: $" + responseStr[20:26])
+
+# garlicoin
+@client.command()
+async def grlc(ctx):
+    """Fetches GRLC price from Coingecko."""
+    url = 'https://api.coingecko.com/api/v3/simple/price?ids=garlicoin&vs_currencies=usd'  # noqa
+    async with aiohttp.ClientSession() as session:  # Async HTTP request
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        response = json.loads(response)
+        responseStr = str(response)
+        await session.close()
+        await ctx.channel.send("Garlicoin price is: $" + responseStr[20:30])
 
 
 # ethereum graph
@@ -211,7 +239,7 @@ async def btcchart(ctx):
 # litecoin graph
 @client.command()
 async def ltcchart(ctx):
-    """Fetches BTC price from Coingecko showing - Open, Close, Low, High"""
+    """Fetches LTC price from Coingecko showing - Open, Close, Low, High"""
 
     url = 'https://api.coingecko.com/api/v3/coins/litecoin/ohlc?vs_currency=usd&days=1'  # noqa
     async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
@@ -244,6 +272,42 @@ async def ltcchart(ctx):
     await ctx.channel.send("```Litecoin 3-Day Chart (USD)```")
     await ctx.channel.send(file=file)
 
+
+# garlicoin graph
+@client.command()
+async def grlcchart(ctx):
+    """Fetches GRLC price from Coingecko showing - Open, Close, Low, High"""
+
+    url = 'https://api.coingecko.com/api/v3/coins/garlicoin/ohlc?vs_currency=usd&days=1'  # noqa
+    async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
+        raw_response = await session.get(url)
+        response = await raw_response.text()
+        df = pd.read_json(response, orient='columns')
+
+        mapping = {df.columns[0]: 'Timestamp',
+                   df.columns[1]: 'Open',
+                   df.columns[2]: 'High',
+                   df.columns[3]: 'Low',
+                   df.columns[4]: 'Close'}
+        df = df.rename(columns=mapping)
+        df = df.drop('Timestamp', 1)
+        df['Open'].plot()
+        df['High'].plot()
+        df['Low'].plot()
+        df['Close'].plot()
+        plt.legend()
+        ax = df.plot(lw=2, colormap='jet',
+                     marker='.',
+                     markersize=10,
+                     title='Garlicoin - GRLC')
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Price - $USD")
+        plt.savefig("./image/grlcGraph.png")
+
+        file = discord.File("image/grlcGraph.png",
+                            filename="grlcGraph.png")
+    await ctx.channel.send("```Garlicoin 3-Day Chart (USD)```")
+    await ctx.channel.send(file=file)
 
 # sudoku - seppuku
 @client.command()
@@ -486,18 +550,16 @@ async def stop(ctx):
 
 # plays video from youtube
 @client.command(aliases=['f'])
-async def fleb(ctx, user):
+async def fleb(ctx):
     """Fleb"""
-    user = user
     channel = ctx.message.author.voice.channel
     voice = get(client.voice_clients, guild=ctx.guild)
 
     if voice and voice.is_connected():
         await voice.move_to(channel)
-        print(f'{user} is a fleb.')
+        print('Fleb command used.')
     else:
         voice = await channel.connect()
-        await ctx.send(content=f"```{user} is a fleb.```")
 
     voice = get(client.voice_clients, guild=ctx.guild)
     voice.play(discord.FFmpegPCMAudio("data/fleb.mp3"),
@@ -505,6 +567,7 @@ async def fleb(ctx, user):
     voice.source = discord.PCMVolumeTransformer(voice.source)
     voice.source.volume = 0.1
     print("Fleb command")
+
 
 # searches for anime on anilist
 @client.command(name="anime")
