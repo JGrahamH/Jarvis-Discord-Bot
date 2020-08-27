@@ -4,7 +4,6 @@ from discord.utils import get
 from dotenv import load_dotenv
 import random
 import aiohttp
-import json
 import youtube_dl
 import os
 import kadal
