@@ -99,7 +99,10 @@ async def bot(ctx):
 async def coin(ctx, id):
     """Fetches Coin price from Coingecko."""
     id = id
-    url = "https://api.coingecko.com/api/v3/simple/price?ids=" + id + "&vs_currencies=USD"  # noqa
+    url = ("https://api.coingecko.com/api/v3/simple/price?ids="
+           + id
+           + "&vs_currencies=USD")
+
     async with aiohttp.ClientSession() as session:  # Async HTTP request
         raw_response = await session.get(url)
         response = await raw_response.text()
@@ -113,7 +116,10 @@ async def coin(ctx, id):
 async def coinchart(ctx, id):
     """Fetches Coin price from Coingecko showing - Open, Close, Low, High."""
     id = id
-    url = "https://api.coingecko.com/api/v3/coins/" + id + "/ohlc?vs_currency=usd&days=1"  # noqa
+    url = "https://api.coingecko.com/api/v3/coins/"
+    + id
+    + "/ohlc?vs_currency=usd&days=1"
+
     async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
         raw_response = await session.get(url)
         response = await raw_response.text()
@@ -245,7 +251,9 @@ async def play(ctx, url):
                           description=(searchURL))
 
     embed.set_author(name="Jarvis", url="",
-                     icon_url="https://cdn.discordapp.com/attachments/727523746059124759/728043489824211034/FH5pIK55ki.png")  # noqa
+                     icon_url="https://cdn.discordapp.com"
+                     "/avatars/727522439046889623/"
+                     "a00dbb8459c13e69663a1c52a338a15b.png")
 
     await ctx.channel.send(embed=embed)
 
@@ -323,18 +331,28 @@ async def al_anime(ctx, query):
         except MediaNotFound:
             return await ctx.send(":exclamation: Anime was not found!")
         except Exception as e:
-            return await ctx.send(f":exclamation: An unknown error occurred:\n{e}")  # noqa
+            return await ctx.send(
+                f":exclamation: An unknown error occurred:\n{e}")
+
     if len(result.description) > 1024:
         result.description = result.description[:1024 - (len(result.site_url) + 7)] + f"[...]({result.site_url})"  # noqa
-    em = discord.Embed(title=result.title['english'] or result.title['romaji'], colour=0x02a9ff)  # noqa
+
+    em = discord.Embed(title=result.title['english'] or result.title['romaji'],
+                       colour=0x02a9ff)
     em.description = ", ".join(result.genres)
     em.url = result.site_url
-    em.add_field(name="Japanese Title", value=result.title['native'], inline=True)  # noqa
-    em.add_field(name="Type", value=str(result.format.name).replace("_", " ").capitalize(), inline=True)  # noqa
+    em.add_field(name="Japanese Title", value=result.title['native'],
+                 inline=True)
+    em.add_field(name="Type",
+                 value=str(result.format.name).replace("_", " ").capitalize(),
+                 inline=True)
     em.add_field(name="Episodes", value=result.episodes or "?", inline=True)
-    em.add_field(name="Score", value=str(result.average_score / 10) + " / 10" if result.average_score else "?",  # noqa
-                 inline=False)
-    em.add_field(name="Status", value=str(result.status.name).replace("_", " ").capitalize(), inline=True)  # noqa
+    em.add_field(name="Score",
+                 value=str(result.average_score / 10)
+                 + " / 10" if result.average_score else "?", inline=False)
+    em.add_field(name="Status",
+                 value=str(result.status.name).replace("_", " ").capitalize(),
+                 inline=True)
     (year, month, day) = result.start_date.values()
     aired = f"{day}/{month}/{year}"
     (year, month, day) = result.end_date.values() if result.end_date['day'] else ('?', '?', '?')  # noqa
@@ -357,19 +375,27 @@ async def al_manga(ctx, query):
         except MediaNotFound:
             return await ctx.send(":exclamation: Manga was not found!")
         except Exception as e:
-            return await ctx.send(f":exclamation: An unknown error occurred:\n{e}")  # noqa
+            return await ctx.send(
+                f":exclamation: An unknown error occurred:\n{e}")
     if len(result.description) > 1024:
         result.description = result.description[:1024 - (len(result.site_url) + 7)] + f"[...]({result.site_url})"  # noqa
-    em = discord.Embed(title=result.title['english'] or result.title['romaji'], colour=0xFF9933)  # noqa
+    em = discord.Embed(title=result.title['english'] or result.title['romaji'],
+                       colour=0xFF9933)
     em.description = ", ".join(result.genres)
     em.url = result.site_url
-    em.add_field(name="Japanese Title", value=result.title['native'], inline=True)  # noqa
-    em.add_field(name="Type", value=str(result.format.name).replace("_", " ").capitalize(), inline=True)  # noqa
+    em.add_field(name="Japanese Title", value=result.title['native'],
+                 inline=True)
+    em.add_field(name="Type",
+                 value=str(result.format.name).replace("_", " ").capitalize(),
+                 inline=True)
     em.add_field(name="Chapters", value=result.chapters or "?", inline=True)
     em.add_field(name="Volumes", value=result.volumes or "?", inline=True)
-    em.add_field(name="Score", value=str(result.average_score / 10) + " / 10" if result.average_score else "?",  # noqa
+    em.add_field(name="Score",
+                 value=str(result.average_score / 10) + " / 10" if result.average_score else "?",  # noqa
                  inline=False)
-    em.add_field(name="Status", value=str(result.status.name).replace("_", " ").capitalize(), inline=True)  # noqa
+    em.add_field(name="Status",
+                 value=str(result.status.name).replace("_", " ").capitalize(),
+                 inline=True)  # noqa
     (year, month, day) = result.start_date.values()
     published = f"{day}/{month}/{year}"
     (year, month, day) = result.end_date.values() if result.end_date['day'] else ('?', '?', '?')  # noqa
