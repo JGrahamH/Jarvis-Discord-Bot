@@ -95,7 +95,6 @@ async def bot(ctx):
     await ctx.send(bot_status)
 
 # cypto commands
-
 # coin
 @client.command()
 async def coin(ctx, id):
@@ -146,105 +145,12 @@ async def coinchart(ctx, id):
     await ctx.channel.send(f"{id} 3-Day Chart (USD)")
     await ctx.channel.send(file=file)
 
-
 # sudoku - seppuku
 @client.command()
 async def sudoku(ctx):
     """Seppuku"""
     file = discord.File("image/sudoku.jpg", filename="sudoku.jpg")
     await ctx.channel.send(file=file)
-
-# Neko Love API
-# list image types from neko api
-@client.command()
-async def imglist(ctx):
-    """List of image search terms."""
-    terms = "```neko``````kitsune``````hug``````pat``````waifu``````cry``````kiss``````slap``````smug``````punch``````NSFW - nekolewd```"  # noqa
-    await ctx.send(terms)
-
-# Embed - gets random cat girl image from neko love
-@client.command()
-async def neko(ctx):
-    """Fetches neko image."""
-    endpoint = 'neko'
-    url = ('https://neko-love.xyz/api/v1/' + endpoint)
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseimg = response['url']
-        await session.close()
-    embed = discord.Embed(title="Click for Source",
-                          colour=discord.Colour(0x3ec490),
-                          url=responseimg)
-    embed.set_author(name="Jarvis",
-                     url="",
-                     icon_url="https://cdn.discordapp.com/attachments/727523746059124759/728043489824211034/FH5pIK55ki.png")  # noqa
-    embed.set_image(url=responseimg)
-    await ctx.channel.send(embed=embed)
-
-# Embed - gets random NSFW image from neko love
-@client.command()
-async def lewd(ctx):
-    """Fetches NSFW image."""
-    endpoint = 'nekolewd'
-    url = ('https://neko-love.xyz/api/v1/' + endpoint)
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseimg = response['url']
-        await session.close()
-    embed = discord.Embed(title="Click for Source",
-                          colour=discord.Colour(0x3ec490),
-                          url=responseimg)
-    embed.set_author(name="Jarvis",
-                     url="",
-                     icon_url="https://cdn.discordapp.com/attachments/727523746059124759/728043489824211034/FH5pIK55ki.png")  # noqa
-    embed.set_image(url=responseimg)
-    await ctx.channel.send(embed=embed)
-
-# Embed - gets random kitsune image from neko love
-@client.command()
-async def kitsune(ctx):
-    """Fetches kitsune image."""
-    endpoint = 'kitsune'
-    url = ('https://neko-love.xyz/api/v1/' + endpoint)
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseimg = response['url']
-        await session.close()
-    embed = discord.Embed(title="Click for Source",
-                          colour=discord.Colour(0x3ec490),
-                          url=responseimg)
-    embed.set_author(name="Jarvis",
-                     url="",
-                     icon_url="https://cdn.discordapp.com/attachments/727523746059124759/728043489824211034/FH5pIK55ki.png")  # noqa
-    embed.set_image(url=responseimg)
-    await ctx.channel.send(embed=embed)
-
-
-# Embed - gets random kitsune image from neko love
-@client.command()
-async def img(ctx, *, endpoint_val):
-    """Fetches image based on tag."""
-    endpoint = endpoint_val
-    url = ('https://neko-love.xyz/api/v1/' + endpoint)
-    async with aiohttp.ClientSession() as session:  # Async HTTP request
-        raw_response = await session.get(url)
-        response = await raw_response.text()
-        response = json.loads(response)
-        responseimg = response['url']
-        await session.close()
-    embed = discord.Embed(title="Click for Source",
-                          colour=discord.Colour(0x3ec490),
-                          url=responseimg)
-    embed.set_author(name="Jarvis", url="",
-                     icon_url="https://cdn.discordapp.com/attachments/727523746059124759/728043489824211034/FH5pIK55ki.png")  # noqa
-    embed.set_image(url=responseimg)
-    await ctx.channel.send(embed=embed)
 
 # youtube playback
 # make bot join channel

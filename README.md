@@ -3,7 +3,7 @@ A discord bot created in python using discord.py. A list of commands provide fea
 
 ## Requirements
 - discord.py
-- python-dotenv - seperated bot token from code to reduce likelihood of token being posted and bot mis-used. 
+- python-dotenv - seperated bot token from code to reduce likelihood of token being posted and bot mis-used.
 - random
 - aiohttp
 - youtube_dl - for music playback in channel
@@ -28,13 +28,8 @@ Prefix "!" is required before command.
 | coin | Fetches coin price from Coingecko. |
 | coinchart | Fetches coin price from Coingecko for the last 3-Days and post a graph as a .png. |
 | fleb | Fleb. |
-| hentai | Fetches NSFW image. |
-| img | Fetches image based on tag. |
-| imglist | List of image search terms. |
-| kitsune | Fetches kitsune image. |
 | anime | Searches Anilist for an Anime. |
 | manga | Searches Anilist for a Manga. |
-| neko | Fetches neko image. |
 | ping | Pong and latency.|
 | sudoku | Seppuku. |
 | join | Bot joins voice channel. |
