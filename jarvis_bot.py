@@ -22,6 +22,7 @@ TOKEN = os.getenv('TOKEN')
 
 AL_ICON = 'https://avatars2.githubusercontent.com/u/18018524?s=280&v=4'
 
+
 # Shows bot is Online
 @client.event
 async def on_ready():
@@ -30,12 +31,14 @@ async def on_ready():
     print('Logged on as {0.user}!'.format(client))
     print('------------')
 
+
 # error
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         print('Command Error.')
         await ctx.send('Invalid Command Used.')
+
 
 # someone leaves server
 @client.event
@@ -45,6 +48,7 @@ async def on_member_join(member):
     mName = member.mention
     await channel.send(f"{mName} has joined the server.")
 
+
 # someone joins server
 @client.event
 async def on_member_leave(member):
@@ -52,6 +56,7 @@ async def on_member_leave(member):
     channel = discord.utils.get(member.guild.channels, name="general")
     mName = member.mention
     await channel.send(f"{mName} has left the server.")
+
 
 # shows messages in console
 @client.event
@@ -62,6 +67,7 @@ async def on_message(message):
         return
 
     await client.process_commands(message)
+
 
 # sends a random message from selection, uses alias for command name
 @client.command(aliases=['404'])
@@ -74,11 +80,13 @@ async def _404(ctx):
     response = random.choice(bot_message_response)
     await ctx.channel.send(response)
 
+
 # ping, pong, latency
 @client.command()
 async def ping(ctx):
     """Pong and latency."""
     await ctx.send(f'pong! {round(client.latency * 1000)}ms')
+
 
 # clears 5 chat messages, unless specified
 @client.command()
@@ -86,12 +94,14 @@ async def clear(ctx, amount=5):
     """Clears chat messages."""
     await ctx.channel.purge(limit=amount)
 
+
 # simple message
 @client.command()
 async def bot(ctx):
     """Bot message."""
     bot_status = "```Hello, I am Jarvis.```"
     await ctx.send(bot_status)
+
 
 # cypto commands
 # coin
@@ -111,20 +121,18 @@ async def coin(ctx, id):
         responseStr = str(price)
         await ctx.channel.send("Price is: $ " + responseStr)
 
+
 # coin graph
 @client.command()
 async def coinchart(ctx, id):
     """Fetches Coin price from Coingecko showing - Open, Close, Low, High."""
     id = id
-    url = "https://api.coingecko.com/api/v3/coins/"
-    + id
-    + "/ohlc?vs_currency=usd&days=1"
+    url = "https://api.coingecko.com/api/v3/coins/" + id + "/ohlc?vs_currency=usd&days=1"  # noqa
 
     async with aiohttp.ClientSession() as session:  # AsyncHTTPrequest
         raw_response = await session.get(url)
         response = await raw_response.text()
         df = pd.read_json(response, orient='columns')
-
         mapping = {df.columns[0]: 'Timestamp',
                    df.columns[1]: 'Open',
                    df.columns[2]: 'High',
@@ -150,12 +158,14 @@ async def coinchart(ctx, id):
     await ctx.channel.send(f"{id} 3-Day Chart (USD)")
     await ctx.channel.send(file=file)
 
+
 # sudoku - seppuku
 @client.command()
 async def sudoku(ctx):
     """Seppuku"""
     file = discord.File("image/sudoku.jpg", filename="sudoku.jpg")
     await ctx.channel.send(file=file)
+
 
 # youtube playback
 # make bot join channel
@@ -173,6 +183,7 @@ async def join(ctx):
 
     await ctx.send(f'Bot has joined - {channel}')
 
+
 # make bot leave channel
 @client.command(aliases=['l'])
 async def leave(ctx):
@@ -187,6 +198,7 @@ async def leave(ctx):
     else:
         print("Bot was told to leave voice channel, but was not in one")
         await ctx.send("Not currently in a voice channel")
+
 
 # plays video from youtube
 @client.command(aliases=['p'])
@@ -257,6 +269,7 @@ async def play(ctx, url):
 
     await ctx.channel.send(embed=embed)
 
+
 # pauses youtube video
 @client.command(aliases=['ps'])
 async def pause(ctx):
@@ -270,6 +283,7 @@ async def pause(ctx):
     else:
         print('Music is not playing - Failed Pause')
         await ctx.sent('Music is not playing - Failed Pause')
+
 
 # resume youtube video
 @client.command(aliases=['rs'])
@@ -285,6 +299,7 @@ async def resume(ctx):
         print('Music is not paused - Failed Pause')
         await ctx.sent('Music is not paused - Failed Pause')
 
+
 # resume youtube video
 @client.command(aliases=['st'])
 async def stop(ctx):
@@ -298,6 +313,7 @@ async def stop(ctx):
     else:
         print('No music playing - Stopped')
         await ctx.sent('No music playing - Stopped')
+
 
 # plays video from youtube
 @client.command(aliases=['f'])
@@ -363,6 +379,7 @@ async def al_anime(ctx, query):
     em.set_author(name='Anilist', icon_url=AL_ICON)
     em.set_thumbnail(url=result.cover_image)
     await ctx.send(embed=em)
+
 
 # searches for manga on anilist
 @client.command(name="manga")
