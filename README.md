@@ -17,6 +17,9 @@ A discord bot created in python using discord.py. A list of commands provide fea
 5. Copy the token for the bot and paste in `.env` file.
 6. Run `jarvis_bot.py`
 
+### Issues
+If you have an error due to missing SSL certificates, refer to [this.](https://github.com/Rapptz/discord.py/issues/4159)
+
 Prefix "!" is required before command.
 
 | Command | Description |
