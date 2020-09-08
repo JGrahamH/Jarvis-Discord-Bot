@@ -20,6 +20,7 @@ A discord bot created in python using discord.py. A list of commands provide fea
 ### Issues
 If you have an error due to missing SSL certificates, refer to [this.](https://github.com/Rapptz/discord.py/issues/4159)
 
+## Commands
 Prefix "!" is required before command.
 
 | Command | Description |
