@@ -30,7 +30,7 @@ Prefix "!" is required before command.
 | 404 | Random bot message. |
 | bot | Bot message. |
 | coin | Fetches coin price from Coingecko. |
-| coinchart | Fetches coin price from Coingecko for the last 3-Days and post a graph as a .png. |
+| coinchart | Fetches coin price from Coingecko for the current day and post a graph as a .png. |
 | fleb | Fleb. |
 | anime | Searches Anilist for an Anime. |
 | manga | Searches Anilist for a Manga. |
