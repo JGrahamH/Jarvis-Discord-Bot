@@ -8,6 +8,9 @@ A discord bot created in python using discord.py. A list of commands provide fea
 - aiohttp
 - youtube_dl - for music playback in channel
 - kadal - used for searching using the anilist API v2
+- pandas
+- matplotlib
+- datetime
 
 ## Getting Started
 1. Clone this repo.
